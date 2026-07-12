@@ -819,16 +819,22 @@
         <!-- Habit Tracker -->
         <div class="project-card">
           <div class="project-top">
-            <span class="project-title">Python Habit Tracker</span>
+            <a href="https://github.com/Quincy-000/habit-tracker" target="_blank" class="project-title">Habit Tracker — CI/CD Pipeline</a>
             <span class="project-arrow">↗</span>
           </div>
           <p class="project-desc">
-            Personal CLI-based habit tracking tool built in Python. Tracks streaks, daily check-ins, and
-            provides progress summaries — developed to reinforce consistency in learning routines.
+            Full CI/CD pipeline for a containerised Flask habit tracker. GitHub push triggers pytest (11 tests),
+            Docker build, Trivy vulnerability scan (hard gate on fixable HIGH/CRITICAL CVEs),
+            and deploy to ECS Fargate behind an ALB with a manual approval gate.
+            Infrastructure torn down after demo to avoid cost — GitHub repo is the permanent record.
           </p>
           <div class="project-tags">
-            <span class="project-tag">Python</span>
-            <span class="project-tag">CLI</span>
+            <span class="project-tag">Flask</span>
+            <span class="project-tag">Docker</span>
+            <span class="project-tag">ECS Fargate</span>
+            <span class="project-tag">CodePipeline</span>
+            <span class="project-tag">Trivy</span>
+            <span class="project-tag">CI/CD</span>
           </div>
         </div>
 
