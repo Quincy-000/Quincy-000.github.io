@@ -785,6 +785,114 @@
             exactly one winner for the last seat. Provisioned with Terraform (49 resources, 2 reusable modules), deployed
             via keyless GitHub OIDC CI/CD, and backed by a 13-test pytest + moto suite. Live over HTTPS via CloudFront.
           </p>
+          <div class="diagram-wrapper">
+            <svg viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg" style="font-family:'JetBrains Mono',monospace;font-size:11px;">
+              <!-- Row 1: client + delivery -->
+              <rect x="15" y="10" width="120" height="40" rx="6" fill="none" stroke="#5b6af0" stroke-width="1.5"/>
+              <text x="75" y="26" text-anchor="middle" fill="#5b6af0" font-weight="500" font-size="12">Browser</text>
+              <text x="75" y="41" text-anchor="middle" fill="#62666d" font-size="9">user</text>
+
+              <rect x="175" y="10" width="120" height="40" rx="6" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <text x="235" y="26" text-anchor="middle" fill="#8a8f98" font-weight="500" font-size="12">CloudFront</text>
+              <text x="235" y="41" text-anchor="middle" fill="#62666d" font-size="9">CDN · HTTPS</text>
+
+              <rect x="335" y="10" width="120" height="40" rx="6" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <text x="395" y="26" text-anchor="middle" fill="#8a8f98" font-weight="500" font-size="12">S3</text>
+              <text x="395" y="41" text-anchor="middle" fill="#62666d" font-size="9">static frontend · OAC</text>
+
+              <line x1="135" y1="30" x2="175" y2="30" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <polygon points="172,26 180,30 172,34" fill="rgba(255,255,255,0.15)"/>
+              <text x="155" y="22" text-anchor="middle" fill="#62666d" font-size="8.5">HTTPS</text>
+
+              <line x1="295" y1="30" x2="335" y2="30" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <polygon points="332,26 340,30 332,34" fill="rgba(255,255,255,0.15)"/>
+              <text x="315" y="22" text-anchor="middle" fill="#62666d" font-size="8.5">OAC</text>
+
+              <!-- Row 2: auth + API -->
+              <rect x="15" y="100" width="120" height="40" rx="6" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <text x="75" y="116" text-anchor="middle" fill="#8a8f98" font-weight="500" font-size="12">Cognito</text>
+              <text x="75" y="131" text-anchor="middle" fill="#62666d" font-size="9">hosted UI · OIDC</text>
+
+              <rect x="175" y="100" width="120" height="40" rx="6" fill="none" stroke="#5b6af0" stroke-width="1.5"/>
+              <text x="235" y="116" text-anchor="middle" fill="#5b6af0" font-weight="500" font-size="12">API Gateway</text>
+              <text x="235" y="131" text-anchor="middle" fill="#62666d" font-size="9">REST · 4 endpoints</text>
+
+              <line x1="75" y1="50" x2="75" y2="100" stroke="#8a8f98" stroke-width="1" stroke-dasharray="4,3"/>
+              <polygon points="71,53 79,53 75,47" fill="#8a8f98"/>
+              <polygon points="71,97 79,97 75,103" fill="#8a8f98"/>
+              <text x="85" y="78" fill="#8a8f98" font-size="9">sign-in ⇄ id_token</text>
+
+              <line x1="135" y1="120" x2="175" y2="120" stroke="#8a8f98" stroke-width="1" stroke-dasharray="4,3"/>
+              <text x="155" y="112" text-anchor="middle" fill="#62666d" font-size="8.5">authorizer</text>
+
+              <path d="M75,50 L75,70 L235,70 L235,100" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <polygon points="231,97 239,97 235,103" fill="rgba(255,255,255,0.15)"/>
+              <text x="155" y="63" text-anchor="middle" fill="#8a8f98" font-size="9">Bearer id_token</text>
+
+              <!-- Row 3: compute + data -->
+              <rect x="15" y="190" width="120" height="40" rx="6" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+              <text x="75" y="206" text-anchor="middle" fill="#62666d" font-weight="500" font-size="12">Lambda</text>
+              <text x="75" y="221" text-anchor="middle" fill="#62666d" font-size="9">GET /events</text>
+
+              <rect x="175" y="190" width="120" height="40" rx="6" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+              <text x="235" y="206" text-anchor="middle" fill="#62666d" font-weight="500" font-size="12">Lambda</text>
+              <text x="235" y="221" text-anchor="middle" fill="#62666d" font-size="9">register · list · cancel</text>
+
+              <rect x="335" y="190" width="120" height="40" rx="6" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <text x="395" y="206" text-anchor="middle" fill="#8a8f98" font-weight="500" font-size="12">DynamoDB</text>
+              <text x="395" y="221" text-anchor="middle" fill="#62666d" font-size="9">Events</text>
+
+              <rect x="495" y="190" width="120" height="40" rx="6" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <text x="555" y="206" text-anchor="middle" fill="#8a8f98" font-weight="500" font-size="12">DynamoDB</text>
+              <text x="555" y="221" text-anchor="middle" fill="#62666d" font-size="9">Registrations · GSI</text>
+
+              <path d="M175,140 L175,165 L135,165 L135,190" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <polygon points="131,187 139,187 135,193" fill="rgba(255,255,255,0.15)"/>
+
+              <line x1="235" y1="140" x2="235" y2="190" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <polygon points="231,187 239,187 235,193" fill="rgba(255,255,255,0.15)"/>
+
+              <line x1="135" y1="210" x2="335" y2="210" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <polygon points="332,206 340,210 332,214" fill="rgba(255,255,255,0.15)"/>
+
+              <line x1="295" y1="210" x2="495" y2="210" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <polygon points="492,206 500,210 492,214" fill="rgba(255,255,255,0.15)"/>
+
+              <!-- Row 4: monitoring + CI/CD -->
+              <rect x="15" y="280" width="120" height="40" rx="6" fill="none" stroke="#62666d" stroke-width="1" stroke-dasharray="3,2"/>
+              <text x="75" y="296" text-anchor="middle" fill="#62666d" font-size="10">CloudWatch</text>
+              <text x="75" y="311" text-anchor="middle" fill="#62666d" font-size="9">alarms · metric filter</text>
+
+              <rect x="175" y="280" width="120" height="40" rx="6" fill="none" stroke="#62666d" stroke-width="1" stroke-dasharray="3,2"/>
+              <text x="235" y="296" text-anchor="middle" fill="#62666d" font-size="10">SNS</text>
+              <text x="235" y="311" text-anchor="middle" fill="#62666d" font-size="9">alert topic</text>
+
+              <rect x="335" y="280" width="120" height="40" rx="6" fill="none" stroke="#62666d" stroke-width="1" stroke-dasharray="3,2"/>
+              <text x="395" y="296" text-anchor="middle" fill="#62666d" font-size="10">Email</text>
+              <text x="395" y="311" text-anchor="middle" fill="#62666d" font-size="9">operator</text>
+
+              <rect x="495" y="280" width="150" height="40" rx="6" fill="none" stroke="#62666d" stroke-width="1" stroke-dasharray="3,2"/>
+              <text x="570" y="296" text-anchor="middle" fill="#62666d" font-size="10">GitHub Actions</text>
+              <text x="570" y="311" text-anchor="middle" fill="#62666d" font-size="9">keyless OIDC · approval</text>
+
+              <line x1="75" y1="230" x2="75" y2="280" stroke="#62666d" stroke-width="1" stroke-dasharray="3,2"/>
+              <polygon points="71,277 79,277 75,283" fill="#62666d"/>
+              <text x="83" y="258" fill="#62666d" font-size="9">metrics + alarms</text>
+
+              <line x1="235" y1="230" x2="235" y2="280" stroke="#62666d" stroke-width="1" stroke-dasharray="3,2"/>
+              <polygon points="231,277 239,277 235,283" fill="#62666d"/>
+              <text x="243" y="258" fill="#62666d" font-size="9">errors · throttles · REGISTRATION_FAILED</text>
+
+              <line x1="135" y1="300" x2="175" y2="300" stroke="#62666d" stroke-width="1" stroke-dasharray="3,2"/>
+              <polygon points="172,296 180,300 172,304" fill="#62666d"/>
+
+              <line x1="295" y1="300" x2="335" y2="300" stroke="#62666d" stroke-width="1" stroke-dasharray="3,2"/>
+              <polygon points="332,296 340,300 332,304" fill="#62666d"/>
+
+              <line x1="570" y1="280" x2="570" y2="245" stroke="#62666d" stroke-width="1" stroke-dasharray="3,2"/>
+              <text x="562" y="262" text-anchor="end" fill="#62666d" font-size="9">deploy · OIDC</text>
+            </svg>
+          </div>
           <div class="project-tags">
             <span class="project-tag">AWS Lambda</span>
             <span class="project-tag">API Gateway</span>
